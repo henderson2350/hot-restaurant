@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations</title>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+    crossorigin="anonymous"
+  />
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Hot Restaurant</h1>
+            <h3>We only have 5 tables left! Reserve before they're gone!</h3>
+            <a href="/tables">
+              <button type="button">View Tables</button>
+            </a>
+            <a href="/">
+              <button type="button">Home</button>
+            </a>
+        </div>
+
+    <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3><strong>Table Resevation</strong></h3>
+            </div>
+            <div class="card-body">
+              <form method="POST" role="form">
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" id="name" />
+                </div>
+
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="text" class="form-control" id="phone" />
+                </div>
+
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="text" class="form-control" id="email" />
+                </div>
+
+                <div class="form-group">
+                  <label for="unique-id">Unique ID</label>
+                  <input type="text" class="form-control" id="unique-id" />
+                </div>
+              </form>
+              <br />
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-md"
+                  id="add-btn"
+                >
+                  <span class="fa fa-fire"></span> Make Reservation
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+
+      // adding an event listener to the Make reservation button
+      const addBtn = document.getElementById("add-btn")
+
+      addBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+      // creating dom variables for all of the input values
+        let resName = document.getElementById('name').value.trim()
+        let resPhone = document.getElementById('phone').value.trim()
+        let resEmail = document.getElementById('email').value.trim()
+        let resId = document.getElementById('unique-id').value.trim()
+
+        let newReservation = {
+          name: resName,
+          phone: parseInt(resPhone),
+          email: resEmail,
+          id: parseInt(resId)
+        }
+
+        fetch('/api/reservations', {
+          method: 'POST',
+          headers:  {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify(newReservation)
+        })
+          .then((response) => response.json())
+          .then((data) =>  {
+            console.log('reserve.html', data)
+            alert(`Adding reservation for: ${data.name}`)
+          })
+          .catch((error) => {
+            console.error('Error:', error)
+          })
+      })
+
+    </script>
+</body>
+</html>
