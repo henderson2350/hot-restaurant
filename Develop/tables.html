@@ -30,7 +30,7 @@
             <h4>Current Reservations</h4>
           </div>
           <div class="card-body">
-            <ul id="table-list" class="list-group"></ul>
+            <div id="table-list" class="list-group"></div>
           </div>
         </div>
         <div class="card mt-4">
@@ -38,11 +38,14 @@
             <h4>Waiting List</h4>
           </div>
           <div class="card-body">
-            <ul id="wait-list" class="list-group"></ul>
+            <div id="wait-list" class="list-group"></div>
           </div>
         </div>
       </div>
+      <a href="/api/reservations" style="margin: 5px">API Tables</a>
+      <a href="/api/waitinglist" style="margin: 5px">API Waitlist</a>
     </div>
+
     <script type="text/javascript">
       const tableList = document.getElementById("table-list");
       const waitList = document.getElementById("wait-list");
@@ -65,7 +68,7 @@
               list = document.createElement("ul")
               list.classList.add("list-group")
               list.classList.add("list-group-flush")
-              
+
               nameItem = document.createElement("li")
               nameItem.classList.add("list-group-item")
               nameItem.textContent = `Name: ${data[i].name}`
@@ -73,7 +76,7 @@
               phoneItem = document.createElement("li")
               phoneItem.classList.add("list-group-item")
               phoneItem.textContent = `Phone: ${data[i].phone}`
-              
+
               emailItem = document.createElement("li")
               emailItem.classList.add("list-group-item")
               emailItem.textContent = `Email: ${data[i].email}`
@@ -81,20 +84,66 @@
               idItem = document.createElement("li")
               idItem.classList.add("list-group-item")
               idItem.textContent = `ID: ${data[i].id}`
-              
+
               list.append(nameItem)
               list.append(phoneItem)
               list.append(emailItem)
               list.append(idItem)
-            
+
               card.append(list)
 
               return card
             }
             ;
             tableList.append(generateCard());
-          
         }});
+      
+      fetch("/api/waitingList", {
+        method: "GET",
+        headers: {"Content-Type": "content/HTML"}
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        for (i=0; i< data.length; i++) {
+          // console.log(data[i].name)
+          function generateWaitlistCard() {
+            console.log(data[i].name)
+              card = document.createElement("div")
+              card.classList.add("card")
+              card.setAttribute("style", "width: 18rem; margin: 10px")
+
+              list = document.createElement("ul")
+              list.classList.add("list-group")
+              list.classList.add("list-group-flush")
+
+              nameItem = document.createElement("li")
+              nameItem.classList.add("list-group-item")
+              nameItem.textContent = `Name: ${data[i].name}`
+
+              phoneItem = document.createElement("li")
+              phoneItem.classList.add("list-group-item")
+              phoneItem.textContent = `Phone: ${data[i].phone}`
+
+              emailItem = document.createElement("li")
+              emailItem.classList.add("list-group-item")
+              emailItem.textContent = `Email: ${data[i].email}`
+
+              idItem = document.createElement("li")
+              idItem.classList.add("list-group-item")
+              idItem.textContent = `ID: ${data[i].id}`
+
+              list.append(nameItem)
+              list.append(phoneItem)
+              list.append(emailItem)
+              list.append(idItem)
+
+              card.append(list)
+
+              return card
+          }
+        waitList.append(generateWaitlistCard())
+        }})
     </script>
   </body>
 </html>
